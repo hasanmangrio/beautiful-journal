@@ -1,26 +1,111 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300;1,9..40,400&family=Bebas+Neue&display=swap');
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --cream: #F4EFE6;
+  --ink: #1A1A0D;
+  --ink-light: #5A5A42;
+  --mint: #8ECFB0;
+  --mint-dark: #4FA880;
+  --border: #DDD8CC;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+* {
+  box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+html,
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--cream);
+  color: var(--ink);
+  font-family: 'DM Sans', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.font-display {
+  font-family: 'Bebas Neue', sans-serif;
+  letter-spacing: 0.02em;
+}
+
+.font-serif {
+  font-family: 'Playfair Display', serif;
+}
+
+.font-sans {
+  font-family: 'DM Sans', sans-serif;
+}
+
+.category-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 16px;
+  border-radius: 999px;
+  border: 1.5px solid var(--mint-dark);
+  background-color: var(--mint);
+  color: var(--ink);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.category-pill:hover {
+  background-color: var(--mint-dark);
+  color: #fff;
+  border-color: var(--mint-dark);
+}
+
+.category-pill.inactive {
+  background-color: transparent;
+  color: var(--ink);
+  border-color: var(--border);
+}
+
+.category-pill.inactive:hover {
+  background-color: var(--mint);
+  border-color: var(--mint-dark);
+  color: var(--ink);
+}
+
+.prose-journal {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.125rem;
+  line-height: 1.85;
+  color: var(--ink);
+}
+
+.prose-journal p {
+  margin-bottom: 1.75rem;
+}
+
+.prose-journal h2 {
+  font-size: 1.625rem;
+  font-weight: 700;
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+  font-family: 'Playfair Display', serif;
+}
+
+.prose-journal h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+}
+
+.prose-journal blockquote {
+  border-left: 3px solid var(--mint-dark);
+  padding-left: 1.25rem;
+  margin: 2rem 0;
+  font-style: italic;
+  color: var(--ink-light);
+}
+
+.divider {
+  border: none;
+  border-top: 1.5px solid var(--border);
 }
