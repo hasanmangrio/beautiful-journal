@@ -1,6 +1,30 @@
 import type { Metadata } from "next";
+import { Plus_Jakarta_Sans, Playfair_Display, Bebas_Neue } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
+
+const jakarta = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600"],
+  style: ["normal", "italic"],
+  variable: "--font-jakarta",
+  display: "swap",
+});
+
+const playfair = Playfair_Display({
+  subsets: ["latin"],
+  weight: ["400", "700", "900"],
+  style: ["normal", "italic"],
+  variable: "--font-playfair",
+  display: "swap",
+});
+
+const bebas = Bebas_Neue({
+  subsets: ["latin"],
+  weight: ["400"],
+  variable: "--font-bebas",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "The Daily — My Journal",
@@ -13,7 +37,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="h-full">
+    <html lang="en" className={`h-full ${jakarta.variable} ${playfair.variable} ${bebas.variable}`}>
       <body className="min-h-full flex flex-col antialiased">
         <Header />
         <main className="flex-1">{children}</main>

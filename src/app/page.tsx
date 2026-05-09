@@ -1,5 +1,9 @@
 import { Suspense } from 'react';
-import { getAllEntries, getAllCategories, getFeaturedEntry } from '@/lib/entries';
+import {
+  getAllEntriesWithNotion,
+  getAllCategoriesWithNotion,
+  getFeaturedEntryWithNotion,
+} from '@/lib/entries';
 import FeaturedEntry from '@/components/FeaturedEntry';
 import EntryCard from '@/components/EntryCard';
 import CategoryFilter from '@/components/CategoryFilter';
@@ -12,9 +16,11 @@ export default async function Home({ searchParams }: HomeProps) {
   const params = await searchParams;
   const activeCategory = params.category || 'All';
 
-  const allEntries = getAllEntries();
-  const categories = getAllCategories();
-  const featured = getFeaturedEntry();
+  const [allEntries, categories, featured] = await Promise.all([
+    getAllEntriesWithNotion(),
+    getAllCategoriesWithNotion(),
+    getFeaturedEntryWithNotion(),
+  ]);
 
   const latestEntries = allEntries
     .filter((e) => !e.featured)
@@ -32,7 +38,6 @@ export default async function Home({ searchParams }: HomeProps) {
         </p>
       </div>
 
-      {/* Divider */}
       <hr className="divider mb-10" />
 
       {/* Main layout: featured left, latest right */}
@@ -52,7 +57,10 @@ export default async function Home({ searchParams }: HomeProps) {
             className="mb-6 pb-3 flex items-center justify-between"
             style={{ borderBottom: '1.5px solid var(--border)' }}
           >
-            <h2 className="font-sans text-xs font-semibold uppercase tracking-widest" style={{ color: 'var(--ink-light)' }}>
+            <h2
+              className="font-sans text-xs font-semibold uppercase tracking-widest"
+              style={{ color: 'var(--ink-light)' }}
+            >
               The Latest
             </h2>
           </div>
@@ -71,7 +79,7 @@ export default async function Home({ searchParams }: HomeProps) {
         </div>
       </div>
 
-      {/* All entries below */}
+      {/* Archive overflow */}
       {latestEntries.length > 4 && (
         <>
           <hr className="divider my-12" />
