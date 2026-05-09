@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
+import { fetchNotionEntries, fetchNotionEntryByPageId, slugToNotionId } from './notion';
 
 const entriesDir = path.join(process.cwd(), 'content/entries');
 
@@ -64,6 +65,41 @@ export function getAllCategories(): string[] {
   const entries = getAllEntries();
   const cats = Array.from(new Set(entries.map((e) => e.category)));
   return cats.sort();
+}
+
+// Merged async versions — used by pages that need Notion + local entries together
+
+export async function getAllEntriesWithNotion(): Promise<Entry[]> {
+  const [local, notion] = await Promise.all([
+    Promise.resolve(getAllEntries()),
+    fetchNotionEntries(),
+  ]);
+  const merged = [...notion, ...local];
+  return merged.sort((a, b) => (a.date < b.date ? 1 : -1));
+}
+
+export async function getFeaturedEntryWithNotion(): Promise<Entry | undefined> {
+  const local = getAllEntries().find((e) => e.featured);
+  if (local) return local;
+  const notion = await fetchNotionEntries();
+  return notion[0]; // most recent Notion entry as fallback featured
+}
+
+export async function getAllCategoriesWithNotion(): Promise<string[]> {
+  const entries = await getAllEntriesWithNotion();
+  const cats = Array.from(new Set(entries.map((e) => e.category)));
+  return cats.sort();
+}
+
+export async function getEntryBySlugWithNotion(slug: string): Promise<Entry | undefined> {
+  // Try local markdown first
+  const local = getEntryBySlug(slug);
+  if (local) return local;
+
+  // Try Notion — decode the slug to a Notion page ID
+  const notionId = slugToNotionId(slug);
+  if (!notionId) return undefined;
+  return (await fetchNotionEntryByPageId(notionId)) ?? undefined;
 }
 
 export function formatDate(dateStr: string): string {
